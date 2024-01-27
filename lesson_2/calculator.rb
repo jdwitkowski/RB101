@@ -9,12 +9,27 @@
 # answer = Kernel.gets()
 # Kernel.puts(answer)
 
+# This is used to import the prompts from a .yml file
+# This is useful so you manage the messages much easier,
+# and can be used for internationalization.
+# See calculator_messages.yml for prompts
+require 'yaml'
+MESSAGES = YAML.load_file('calculator_messages.yml')
+
 def prompt(message)
   Kernel.puts("=> #{message}")
 end
 
-def valid_number?(num)
-  num.to_i() != 0
+def integer?(num)
+  num.to_i.to_s == num
+end
+
+def float?(num)
+  num.to_f.to_s == num
+end
+
+def number?(num)
+  integer?(num) || float?(num)
 end
 
 def operation_to_message(op)
@@ -30,7 +45,7 @@ def operation_to_message(op)
   end
 end
 
-prompt("Welcome to the Calculator! Enter your name:")
+prompt(MESSAGES['welcome'])
 
 name = ''
 loop do
@@ -52,7 +67,7 @@ loop do # Main loop
     prompt("What's the first number?")
     number1 = Kernel.gets().chomp()
 
-    if valid_number?(number1)
+    if number?(number1)
       break
     else
       prompt("Hmm...that doesn't look like a valid number")
@@ -64,7 +79,7 @@ loop do # Main loop
     prompt("What's the second number?")
     number2 = Kernel.gets().chomp()
 
-    if valid_number?(number2)
+    if number?(number2)
       break
     else
       prompt("Hmm...that doesn't look like a valid number")
